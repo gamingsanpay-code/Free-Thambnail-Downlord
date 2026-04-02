@@ -1,1 +1,88 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Thumbnail Hub PRO</title>
+<meta name="description" content="Download YouTube thumbnails & free custom templates. HD/SD options.">
+
+<style>
+body {font-family:sans-serif; text-align:center; margin:0; transition:0.3s; background:#0f172a; color:white;}
+body.light {background:#f1f5f9; color:black;}
+.container {padding:20px;}
+input {padding:10px; width:80%; max-width:400px; margin-top:10px; border-radius:6px; border:none;}
+button {padding:10px 15px; margin:5px; border:none; border-radius:6px; cursor:pointer; font-weight:bold;}
+button.main {background:#38bdf8; color:black;}
+button.download {background:#22c55e; color:white; display:none;}
+button.toggle {position:absolute; top:10px; right:10px; background:#eab308;}
+img {width:90%; max-width:400px; margin-top:15px; border-radius:10px;}
+.gallery {display:flex; flex-wrap:wrap; justify-content:center; margin-top:20px;}
+.gallery img {width:150px; margin:10px; border-radius:6px; cursor:pointer; transition:0.2s;}
+.gallery img:hover {transform:scale(1.05);}
+.quality-btns {margin-top:10px;}
+</style>
+
+</head>
+<body>
+
+<button class="toggle" onclick="toggleMode()">🌙/☀</button>
+
+<div class="container">
+<h1>🎬 Thumbnail Hub PRO</h1>
+
+<!-- Downloader -->
+<h2>Download YouTube Thumbnail</h2>
+<input type="text" id="url" placeholder="Paste YouTube link">
+<br>
+<button class="main" onclick="getThumbnail()">Get</button>
+<div class="quality-btns">
+  <button onclick="setQuality('maxresdefault')">HD</button>
+  <button onclick="setQuality('hqdefault')">SD</button>
+</div>
+<br>
+<img id="thumb">
+<br>
+<a id="dl" download><button class="download" id="downloadBtn">⬇ Download</button></a>
+
+<hr>
+
+<!-- Gallery -->
+<h2>Free Custom Thumbnails (Safe, Legal)</h2>
+<div id="gallery" class="gallery">
+  <img src="thumbnails/gaming1.jpg" alt="Gaming Thumbnail">
+  <img src="thumbnails/vlog1.jpg" alt="Vlog Thumbnail">
+  <img src="thumbnails/tech1.jpg" alt="Tech Thumbnail">
+  <img src="thumbnails/funny1.jpg" alt="Funny Thumbnail">
+</div>
+
+</div>
+
+<script>
+let videoId = "";
+let quality = "maxresdefault";
+
+// Downloader functions
+function getThumbnail(){
+  let url = document.getElementById("url").value;
+  if(!url.includes("v=")){alert("Invalid YouTube URL!"); return;}
+  videoId = url.split("v=")[1].split("&")[0];
+  updateImage();
+}
+function setQuality(q){quality=q; if(videoId) updateImage();}
+function updateImage(){
+  let imgUrl = `https://img.youtube.com/vi/${videoId}/${quality}.jpg`;
+  document.getElementById("thumb").src = imgUrl;
+  document.getElementById("dl").href = imgUrl;
+  document.getElementById("downloadBtn").style.display="inline-block";
+}
+
+// Dark/Light mode
+function toggleMode(){
+  document.body.classList.toggle("light");
+}
+</script>
+
+</body>
+</html>
