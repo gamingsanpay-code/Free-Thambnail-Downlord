@@ -5,28 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- SEO -->
-  <title>YouTube Thumbnail Downloader Free</title>
-  <meta name="description" content="Download YouTube thumbnails in HD quality for free. Fast and easy tool.">
+  <title>YouTube Thumbnail Downloader HD</title>
+  <meta name="description" content="Download YouTube thumbnails in HD, SD, and more for free. Fast & mobile-friendly.">
 
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
   <style>
     body {
       font-family: 'Poppins', sans-serif;
       text-align: center;
+      margin: 0;
+      transition: 0.3s;
+    }
+
+    .dark {
       background: #0f172a;
       color: white;
-      margin: 0;
-      padding: 0;
+    }
+
+    .light {
+      background: #f1f5f9;
+      color: black;
     }
 
     .container {
       padding: 40px 20px;
-    }
-
-    h1 {
-      color: #38bdf8;
     }
 
     input {
@@ -39,18 +42,30 @@
     }
 
     button {
-      padding: 12px 20px;
-      margin-top: 15px;
+      padding: 10px 18px;
+      margin: 8px;
       border: none;
       border-radius: 8px;
-      background: #38bdf8;
-      color: black;
-      font-weight: bold;
       cursor: pointer;
+      font-weight: bold;
     }
 
-    button:hover {
-      background: #0ea5e9;
+    .main-btn {
+      background: #38bdf8;
+      color: black;
+    }
+
+    .download {
+      background: #22c55e;
+      color: white;
+      display: none;
+    }
+
+    .toggle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #eab308;
     }
 
     img {
@@ -60,65 +75,72 @@
       border-radius: 10px;
     }
 
-    .download-btn {
-      display: none;
+    .quality-btns {
       margin-top: 15px;
-      background: #22c55e;
-      color: white;
     }
-
-    footer {
-      margin-top: 40px;
-      font-size: 12px;
-      color: gray;
-    }
-
   </style>
 </head>
 
-<body>
+<body class="dark">
+
+  <button class="toggle" onclick="toggleMode()">🌙/☀</button>
 
   <div class="container">
-    <h1>🎬 Thumbnail Downloader</h1>
-    <p>Paste YouTube video link below</p>
+    <h1>🎬 Thumbnail Downloader PRO</h1>
+    <p>Paste YouTube video link</p>
 
     <input type="text" id="url" placeholder="https://youtube.com/watch?v=...">
     <br>
 
-    <button onclick="getThumbnail()">Get Thumbnail</button>
+    <button class="main-btn" onclick="getThumbnail()">Get Thumbnail</button>
 
-    <br>
-    <img id="thumb" src="">
+    <div class="quality-btns">
+      <button onclick="setQuality('maxresdefault')">HD</button>
+      <button onclick="setQuality('hqdefault')">SD</button>
+      <button onclick="setQuality('mqdefault')">MQ</button>
+    </div>
+
+    <img id="thumb">
 
     <br>
     <a id="downloadLink" download>
-      <button class="download-btn" id="downloadBtn">⬇ Download HD</button>
+      <button class="download" id="downloadBtn">⬇ Download</button>
     </a>
   </div>
 
-  <footer>
-    © 2026 Free Tool | Made by You 😎
-  </footer>
-
   <script>
+    let videoId = "";
+    let quality = "maxresdefault";
+
     function getThumbnail() {
       let url = document.getElementById("url").value;
 
       if (!url.includes("v=")) {
-        alert("Invalid YouTube URL!");
+        alert("Invalid URL!");
         return;
       }
 
-      let videoId = url.split("v=")[1].split("&")[0];
+      videoId = url.split("v=")[1].split("&")[0];
+      updateImage();
+    }
 
-      let hd = "https://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg";
+    function setQuality(q) {
+      quality = q;
+      if (videoId) updateImage();
+    }
 
-      document.getElementById("thumb").src = hd;
+    function updateImage() {
+      let imgUrl = "https://img.youtube.com/vi/" + videoId + "/" + quality + ".jpg";
 
-      let downloadLink = document.getElementById("downloadLink");
-      downloadLink.href = hd;
-
+      document.getElementById("thumb").src = imgUrl;
+      document.getElementById("downloadLink").href = imgUrl;
       document.getElementById("downloadBtn").style.display = "inline-block";
+    }
+
+    function toggleMode() {
+      let body = document.body;
+      body.classList.toggle("dark");
+      body.classList.toggle("light");
     }
   </script>
 
